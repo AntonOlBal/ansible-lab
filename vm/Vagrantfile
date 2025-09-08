@@ -1,0 +1,36 @@
+Vagrant.configure("2") do |config|
+
+  # Настройка для 'control-node' (наш управляющий сервер)
+  config.vm.define "control" do |control|
+    control.vm.box = "bento/ubuntu-22.04"
+    control.vm.hostname = "control"
+    control.vm.network "private_network", ip: "192.168.56.10"
+    control.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = "1"
+      vb.name = "control-node"
+    end
+  end
+
+# Настройка для двух веб-серверов
+(1..2).each do |i|
+  config.vm.define "web0#{i}" do |web|
+    web.vm.box = "bento/ubuntu-22.04"
+    web.vm.hostname = "web0#{i}"
+    web.vm.network "private_network", ip: "192.168.56.1#{i}"
+    # Убираем кастомные настройки для VirtualBox для этих машин
+  end
+end
+
+  # Настройка для одного сервера БД
+  config.vm.define "db01" do |db|
+    db.vm.box = "bento/ubuntu-22.04"
+    db.vm.hostname = "db01"
+    db.vm.network "private_network", ip: "192.168.56.20"
+    db.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = "1"
+      vb.name = "db-server"
+    end
+  end
+end
