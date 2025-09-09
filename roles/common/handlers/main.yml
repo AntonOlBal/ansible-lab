@@ -1,0 +1,4 @@
+---
+- name: flush motd
+  ansible.builtin.command: wall "MOTD was updated on {{ inventory_hostname }}"
+  listen: "flush motd"

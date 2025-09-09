@@ -1,0 +1,10 @@
+common_packages:
+  - vim
+  - curl
+  - wget
+  - htop
+  - tree
+  - git
+  - fail2ban
+  - ufw
+timezone: Europe/Moscow
