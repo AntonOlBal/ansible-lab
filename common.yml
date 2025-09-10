@@ -1,6 +1,6 @@
 ---
-name: Base services deploy and update
-hosts: all_hosts
-become: yes
-roles:
-  - role: common
+- name: Base services deploy and update
+  hosts: all_hosts
+  become: yes
+  roles:
+    - role: common
