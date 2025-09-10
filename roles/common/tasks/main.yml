@@ -21,8 +21,23 @@
   ansible.builtin.template:
     src: motd.j2
     dest: /etc/motd
-    owner: root
-    group: root
-    mode: '0644'
   notify: flush motd # Уведомляем handler
   tags: config
+
+- name: Configure UFW firewall
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    rule: allow
+    port: '22'
+    proto: tcp
+  tags: firewall
+
+- name: Create ansible-admin user
+  ansible.builtin.user:
+    name: ansible-admin
+    groups: sudo
+    append: yes
+    password: "{{ 'ansible' | password_hash('sha512') }}"
+    state: present
+  tags: users
