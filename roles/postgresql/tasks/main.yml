@@ -18,6 +18,7 @@
   tags: library
 
 - name: Create application database
+  become_user: postgres
   community.postgresql.postgresql_db:
     name: myapp
     state: present
