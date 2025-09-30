@@ -10,6 +10,13 @@
     enabled: yes
     state: started
 
+- name: Install common library
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ default_library }}"
+  tags: library
+
 - name: Create application database
   community.postgresql.postgresql_db:
     name: myapp
