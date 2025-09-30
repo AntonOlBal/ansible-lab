@@ -3,3 +3,17 @@
     name: nginx
     state: present
   tags: packages
+
+- name: Create Nginx config for web servers
+  ansible.builtin.template:
+    src: web.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+  when: inventory_hostname in groups['web']
+
+- name: Create Nginx config for load balancer
+  ansible.builtin.template:
+    src: lb.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx
+  when: inventory_hostname in groups['control_nodes']
