@@ -2,5 +2,4 @@
   ansible.builtin.apt:
     name: nginx
     state: present
-  loop: "{{ common_packages }}"
   tags: packages
