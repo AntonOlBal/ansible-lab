@@ -1,0 +1,23 @@
+---
+- name: Install PostgreSQL
+  ansible.builtin.apt:
+    name: postgresql
+    state: present
+
+- name: Ensure PostgreSQL is running
+  ansible.builtin.service:
+    name: postgresql
+    enabled: yes
+    state: started
+
+- name: Create application database
+  community.postgresql.postgresql_db:
+    name: myapp
+    state: present
+
+- name: Create database user
+  community.postgresql.postgresql_user:
+    name: myuser
+    password: mypassword
+    state: present
+    expires: infinity
