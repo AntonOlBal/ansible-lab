@@ -2,7 +2,7 @@ events {}
 http {
     upstream backend {
         {% for host in groups['web'] %}
-        server {{ hostvars[host].ansible_default_ipv4.address }}:808;
+        server {{ hostvars[host].ansible_default_ipv4.address }}:8080;
         {% endfor %}
     }
     server {
