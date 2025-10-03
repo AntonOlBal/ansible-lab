@@ -1,7 +1,10 @@
 ---
 - name: Install PostgreSQL
   ansible.builtin.apt:
-    name: postgresql
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
     state: present
 
 - name: Ensure PostgreSQL is running
@@ -10,18 +13,28 @@
     enabled: yes
     state: started
 
-- name: Install common library
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ default_library }}"
-  tags: library
+- name: Configure PostgreSQL authentication
+  become_user: postgres
+  lineinfile:
+    path: /etc/postgresql/*/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer'
+    line: 'local all postgres md5'
+    backrefs: yes
+  notify: reload postgresql
+
+- name: Set postgres password
+  become_user: postgres
+  postgresql_user:
+    name: postgres
+    password: "{{ postgres_password }}"
 
 - name: Create application database
   become_user: postgres
-  community.postgresql.postgresql_db:
+  postgresql_db:
     name: myapp
-    state: present
+    encoding: UTF8
+    login_user: postgres
+    login_password: "{{ postgres_password }}"
 
 - name: Create database user
   community.postgresql.postgresql_user:

@@ -1,2 +1,0 @@
-default_library:
-  - python3-psycopg2
