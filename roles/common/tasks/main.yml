@@ -41,3 +41,16 @@
     password: "{{ 'ansible' | password_hash('sha512') }}"
     state: present
   tags: users
+
+- name: Debug - Display environment variables
+  ansible.builtin.debug:
+    msg:
+      - "=== Environment Variables Debug Info ==="
+      - "Hostname: {{ inventory_hostname }}"
+      - "Host IP: {{ ansible_host | default('N/A') }}"
+      - "Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+      - "Timezone: {{ timezone }}"
+      - "Common packages: {{ common_packages }}"
+      - "Groups: {{ group_names }}"
+      - "All groups: {{ groups.keys() | list }}"
+  tags: debug
